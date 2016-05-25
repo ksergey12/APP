@@ -25,6 +25,7 @@ public class ParserServiceImpl implements ParserService {
                 .userAgent("Mozilla/5.0 (Windows NT 6.1; rv:46.0) Gecko/20100101 Firefox/46.0")
                 .cookie("language", "ru")
                 .cookie("currency", "UAH")
+                .timeout(10*1000)
                 .get();
         assert document != null;
         Element image = document.select(placeholder.getImage()).first();
