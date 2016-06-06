@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.ibm.icu.text.Transliterator;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -25,7 +26,10 @@ public class ParserServiceImpl implements ParserService {
                 .userAgent("Mozilla/5.0 (Windows NT 6.1; rv:46.0) Gecko/20100101 Firefox/46.0")
                 .cookie("language", "ru")
                 .cookie("currency", "UAH")
-                .timeout(10*1000)
+        /**
+         * Workaround for "java.net.SocketTimeoutException: Read timed out"
+         */
+                .timeout(10 * 1000)
                 .get();
         assert document != null;
         Element image = document.select(placeholder.getImage()).first();
@@ -79,5 +83,10 @@ public class ParserServiceImpl implements ParserService {
                 .trim();
 
         return Jsoup.clean(input, Whitelist.relaxed().removeTags("u", "div"));
+    }
+
+    public String transliteration(String input) {
+        Transliterator cyrillicToLatin = Transliterator.getInstance("Cyrillic-Latin");
+        return cyrillicToLatin.transliterate(input).replaceAll("ʹ", "");
     }
 }

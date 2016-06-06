@@ -39,11 +39,16 @@ class MainController {
             String content = parseResult.get("content");
             String excerpt = parseResult.get("excerpt");
             String imageFileName = parseResult.get("imageFileName");
+            imageFileName = parser.transliteration(imageFileName);
             String imageUrl = parseResult.get("imageUrl");
 
-            Date date = new Date("04/16/2012");
-            String[] categories = {"Протравители"};
-            String[] tags = {"протравители"};
+            int hour = new Date(System.currentTimeMillis()).getHours();
+            int min = new Date(System.currentTimeMillis()).getMinutes();
+            int sec = new Date(System.currentTimeMillis()).getSeconds();
+            Date date = new Date("01/06/2012 " + hour + ":" + min + ":" + sec);
+
+            String[] categories = {"Гербициды"};
+            String[] tags = {"гербициды"};
 
             BlogPost entry = new BlogPost(title, content, excerpt, "draft", date, categories, tags);
 
@@ -65,8 +70,6 @@ class MainController {
             /**
              * This will pause parsing at specified time in millis. Useful when you get
              * java.io.ioexception: too many redirects occurred trying to load url
-             * or
-             * java.net.SocketTimeoutException: Read timed out
              */
             Thread.sleep(5000);
         }
